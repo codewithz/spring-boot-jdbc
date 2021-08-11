@@ -7,5 +7,6 @@ public interface IOrderService
 {
 	public int addOrder(Order o);
 	public String placeOrder(OrderCartVO orderCartVO);
+	public OrderCartVO getOrderById(int id);
 
 }

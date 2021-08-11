@@ -65,4 +65,20 @@ public class OrderService implements IOrderService
 		return Status.SUCCESS;
 	}
 
+	@Override
+	public OrderCartVO getOrderById(int id) {
+		
+		Order o=orderDao.getOrderById(id);
+		List<Cart> cart=cartDao.getCartForOrderId(id);
+		
+		OrderCartVO vo=new OrderCartVO();
+		vo.setId(id);
+		vo.setAmount(o.getAmount());
+		vo.setOrderdate(o.getOrderdate());
+		vo.setName(o.getName());
+		vo.setCart(cart);
+		
+		return vo;
+	}
+
 }
