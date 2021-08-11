@@ -37,13 +37,20 @@ public class CustomerService implements ICustomerService
 	@Override
 	public Customer getCustomerById(int id) {
 		
-		return null;
+		Customer c=customerDao.getCustomerById(id);
+		return c;
 	}
 
 	@Override
 	public List<Customer> getAllCustomers() {
-	
-		return null;
+		List<Customer> list=customerDao.getAllCustomers();
+		return list;
+	}
+
+	@Override
+	public List<Customer> getCustomersByActive(boolean activeStatus) {
+		List<Customer> list=customerDao.getCustomersByActive(activeStatus);
+		return list;
 	}
 	
 

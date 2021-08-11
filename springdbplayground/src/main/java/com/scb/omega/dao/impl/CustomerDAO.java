@@ -1,9 +1,11 @@
 package com.scb.omega.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.scb.omega.dao.ICustomerDAO;
@@ -96,14 +98,52 @@ public class CustomerDAO implements ICustomerDAO {
 
 	@Override
 	public Customer getCustomerById(int id) {
+		Customer c=null;
+		try
+		{
+		String query="Select id,name,email,phone,active,birthdate from customer_scb where id=?";
+		RowMapper<Customer> rowMapper=new CustomerRowMapper();
+		c=template.queryForObject(query, rowMapper,id);
 		
-		return null;
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return c;
 	}
 
 	@Override
 	public List<Customer> getAllCustomers() {
 		
-		return null;
+		List<Customer> list=new ArrayList<>();
+		try
+		{
+			String query="Select id,name,email,phone,active,birthdate from customer_scb";
+			RowMapper<Customer> rowMapper=new CustomerRowMapper();
+			list=template.query(query,rowMapper);
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<Customer> getCustomersByActive(boolean activeStatus) {
+		List<Customer> list=new ArrayList<>();
+		try
+		{
+			String query="Select id,name,email,phone,active,birthdate from customer_scb where active=?";
+			RowMapper<Customer> rowMapper=new CustomerRowMapper();
+			list=template.query(query,rowMapper,activeStatus);
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 }

@@ -10,4 +10,5 @@ public interface ICustomerDAO {
 	public String deleteCustomer(int id);
 	public Customer getCustomerById(int id);
 	public List<Customer> getAllCustomers();
+	public List<Customer> getCustomersByActive(boolean activeStatus);
 }
