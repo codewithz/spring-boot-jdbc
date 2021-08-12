@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.scb.omega.dao.ICustomerDAO;
 import com.scb.omega.entities.Customer;
+import com.scb.omega.entities.vo.CustomerUser;
 import com.scb.omega.utils.Status;
 
 @Repository
@@ -24,7 +25,7 @@ public class CustomerDAO implements ICustomerDAO {
 		try
 		{
 			String query="Insert into customer_scb(name,email,phone,active,birthdate) values (?,?,?,?,?);";
-			int rowInserted=template.update(query,c.getName(),c.getEmail(),c.getPhone(),c.isActive(),c.getBirthdate().toString());
+			int rowInserted=template.update(query,c.getName(),c.getEmail(),c.getPhone(),c.isActive(),c.getBirthdate());
 			
 			if(rowInserted==1)
 			{
@@ -144,6 +145,49 @@ public class CustomerDAO implements ICustomerDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+
+
+	@Override
+	public String login(CustomerUser user) {
+		Customer c=null;
+		String status="";
+		try
+		{
+		String query="Select id,name,email,phone,active,birthdate from customer_scb where email=? and name=?";
+		RowMapper<Customer> rowMapper=new CustomerRowMapper();
+		c=template.queryForObject(query, rowMapper,user.getUsername(),user.getPassword());
+		if(c==null)
+		{
+			status="User doesnt exist";
+		}
+		else
+		{
+		String userDB=c.getEmail();
+		String userFE=user.getUsername();
+		String passwordDB=c.getName();
+		String passwordFE=user.getPassword();
+		
+		if(userDB.equals(userFE) && passwordDB.equals(passwordFE))
+		{
+			status="Login Success";
+		}
+		else
+		{
+			status="Invalid Credentials";
+		}
+		
+		}
+		
+		
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return status;
+		
 	}
 
 }

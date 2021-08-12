@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.scb.omega.dao.ICustomerDAO;
 import com.scb.omega.entities.Customer;
+import com.scb.omega.entities.vo.CustomerUser;
 import com.scb.omega.service.ICustomerService;
 
 @Service
@@ -52,6 +53,14 @@ public class CustomerService implements ICustomerService
 		List<Customer> list=customerDao.getCustomersByActive(activeStatus);
 		return list;
 	}
+
+	@Override
+	public String login(CustomerUser user) {
+		String status=customerDao.login(user);
+		return status;
+	}
+	
+	
 	
 
 }

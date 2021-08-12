@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scb.omega.entities.Customer;
+import com.scb.omega.entities.vo.CustomerUser;
 import com.scb.omega.service.ICustomerService;
 import com.scb.omega.utils.Status;
 
 @RestController
 @RequestMapping("/api/v1/customers")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CustomerController 
 {
 	@Autowired
@@ -125,5 +128,27 @@ public class CustomerController
 			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return response;
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody CustomerUser user)
+	{
+		ResponseEntity<String> response=null;
+		String status=customerService.login(user);
+		if(status.equals("Login Success"))
+		{
+			response=new ResponseEntity<>(status,HttpStatus.OK);
+		}
+		else if(status.equals("Invalid Credentials")) {
+			response=new ResponseEntity<>(status,HttpStatus.UNAUTHORIZED);
+			
+		}
+		else
+		{
+			response=new ResponseEntity<>(status,HttpStatus.NOT_FOUND);
+		}
+		
+		return response;
+		
 	}
 }
