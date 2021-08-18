@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.scb.omega.dao.ICustomerDAO;
 import com.scb.omega.entities.Customer;
@@ -24,6 +26,7 @@ public class CustomerDAO implements ICustomerDAO {
 		String status="";
 		try
 		{
+			
 			String query="Insert into customer_scb(name,email,phone,active,birthdate) values (?,?,?,?,?);";
 			int rowInserted=template.update(query,c.getName(),c.getEmail(),c.getPhone(),c.isActive(),c.getBirthdate());
 			
@@ -33,13 +36,15 @@ public class CustomerDAO implements ICustomerDAO {
 			}
 			else
 			{
-				status= Status.NOT_FOUND;
+				status=Status.NOT_FOUND;
 			}
 			
 		}
 		catch (Exception e) {
 			// TODO: handle exception
+			
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 		}
 		
 		return status;
@@ -50,6 +55,7 @@ public class CustomerDAO implements ICustomerDAO {
 		String status="";
 		try
 		{
+			
 			String query="Update customer_scb set name=?,email=?,phone=?,active=?,birthdate=? where id=?;";
 			int rowUpdated=template.update(query,c.getName(),c.getEmail(),c.getPhone(),c.isActive(),c.getBirthdate(),id);
 			
@@ -59,13 +65,15 @@ public class CustomerDAO implements ICustomerDAO {
 			}
 			else
 			{
-				status= Status.NOT_FOUND;
+				status=Status.NOT_FOUND;
+				
 			}
 			
 		}
 		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 		}
 		
 		return status;
@@ -92,6 +100,7 @@ public class CustomerDAO implements ICustomerDAO {
 		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		
 		return status;
@@ -110,6 +119,7 @@ public class CustomerDAO implements ICustomerDAO {
 		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		return c;
 	}
@@ -127,6 +137,7 @@ public class CustomerDAO implements ICustomerDAO {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		return list;
 	}
@@ -143,6 +154,7 @@ public class CustomerDAO implements ICustomerDAO {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		return list;
 	}
@@ -157,7 +169,7 @@ public class CustomerDAO implements ICustomerDAO {
 		{
 		String query="Select id,name,email,phone,active,birthdate from customer_scb where email=? and name=?";
 		RowMapper<Customer> rowMapper=new CustomerRowMapper();
-		c=template.queryForObject(query, rowMapper,user.getUsername(),user.getPassword());
+		c=template.queryForObject(query,rowMapper,user.getUsername(),user.getPassword());
 		if(c==null)
 		{
 			status="User doesnt exist";
@@ -185,6 +197,7 @@ public class CustomerDAO implements ICustomerDAO {
 		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 		return status;
 		

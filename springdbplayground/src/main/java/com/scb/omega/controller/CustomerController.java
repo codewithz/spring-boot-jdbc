@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.scb.omega.entities.Customer;
 import com.scb.omega.entities.vo.CustomerUser;
@@ -36,11 +37,12 @@ public class CustomerController
 			
 		if(result.equals(Status.SUCCESS))
 		{
+			
 			response=new ResponseEntity<>(HttpStatus.CREATED);
 		}
 		else
 		{
-			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer was not created");
 		}
 		return response;
 	}
@@ -56,7 +58,7 @@ public class CustomerController
 		}
 		else
 		{
-			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer with id:"+id+" was not found | Update Operation Failed");
 		}
 		return response;
 		
@@ -73,7 +75,7 @@ public class CustomerController
 		}
 		else
 		{
-			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer with id:"+id+" was not found | Delete Operation Failed");
 		}
 		return response;
 		
@@ -93,7 +95,7 @@ public class CustomerController
 		}
 		else
 		{
-			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer with id:"+id+" was not found");
 		}
 		return response;
 	}
@@ -109,7 +111,7 @@ public class CustomerController
 		}
 		else
 		{
-			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No customers available");
 		}
 		return response;
 	}
@@ -125,7 +127,7 @@ public class CustomerController
 		}
 		else
 		{
-			response=new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer with active status of:"+active+" was not found");
 		}
 		return response;
 	}
@@ -140,12 +142,13 @@ public class CustomerController
 			response=new ResponseEntity<>(status,HttpStatus.OK);
 		}
 		else if(status.equals("Invalid Credentials")) {
-			response=new ResponseEntity<>(status,HttpStatus.UNAUTHORIZED);
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Credentials");
+		
 			
 		}
 		else
 		{
-			response=new ResponseEntity<>(status,HttpStatus.NOT_FOUND);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
 		}
 		
 		return response;
