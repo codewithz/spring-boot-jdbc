@@ -170,6 +170,7 @@ public class CustomerDAO implements ICustomerDAO {
 		String query="Select id,name,email,phone,active,birthdate from customer_scb where email=? and name=?";
 		RowMapper<Customer> rowMapper=new CustomerRowMapper();
 		c=template.queryForObject(query,rowMapper,user.getUsername(),user.getPassword());
+	
 		if(c==null)
 		{
 			status="User doesnt exist";
