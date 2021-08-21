@@ -1,21 +1,27 @@
 package com.scb.omega.service.impl;
 
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import com.scb.omega.entities.Customer;
 
 @Service
 public class UserService implements UserDetailsService {
+	
+	@Autowired
+    CustomerService service;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        //Logic to get the user form the Database
-
-        return new User("zartab","codewithz123",new ArrayList<>());
+    	Customer c=service.getCustomerByEmail(userName);
+     
+        return new User(c.getEmail(),c.getName(),new ArrayList<>());
     }
 }

@@ -59,6 +59,12 @@ public class CustomerService implements ICustomerService
 		String status=customerDao.login(user);
 		return status;
 	}
+
+	@Override
+	public Customer getCustomerByEmail(String email) {
+		Customer c=customerDao.getCustomerByEmail(email);
+		return c;
+	}
 	
 	
 	

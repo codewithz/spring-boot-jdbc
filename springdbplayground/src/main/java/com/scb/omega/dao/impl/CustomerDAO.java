@@ -204,4 +204,22 @@ public class CustomerDAO implements ICustomerDAO {
 		
 	}
 
+	@Override
+	public Customer getCustomerByEmail(String email) {
+		Customer c=null;
+		try
+		{
+		String query="Select id,name,email,phone,active,birthdate from customer_scb where email=?";
+		RowMapper<Customer> rowMapper=new CustomerRowMapper();
+		c=template.queryForObject(query, rowMapper,email);
+		
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+		return c;
+	}
+
 }

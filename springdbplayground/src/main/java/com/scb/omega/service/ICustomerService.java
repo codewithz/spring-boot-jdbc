@@ -11,6 +11,7 @@ public interface ICustomerService {
 	public String updateCustomer(Customer c,int id);
 	public String deleteCustomer(int id);
 	public Customer getCustomerById(int id);
+	public Customer getCustomerByEmail(String email);
 	public List<Customer> getAllCustomers();
 	public List<Customer> getCustomersByActive(boolean activeStatus);
 	public String login(CustomerUser user);

@@ -14,4 +14,5 @@ public interface ICustomerDAO {
 	public List<Customer> getAllCustomers();
 	public List<Customer> getCustomersByActive(boolean activeStatus);
 	public String login(CustomerUser user);
+	public Customer getCustomerByEmail(String email);
 }
